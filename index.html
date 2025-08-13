@@ -2,15 +2,35 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>Marrakech Distances Chart</title>
+  <title>Marrakech Distance Comparison Chart</title>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    /* Make chart responsive for Blogspot & mobile */
+    .chart-container {
+      position: relative;
+      width: 100%;
+      max-width: 900px;
+      margin: auto;
+    }
+    canvas {
+      background: #fff;
+      border-radius: 10px;
+      padding: 10px;
+    }
+  </style>
 </head>
 <body>
-  <h3>Driving Distances from Marrakech to Major Moroccan Cities (km)</h3>
-  <canvas id="marrakechDistances" width="900" height="500"></canvas>
+
+  <h3 style="text-align:center;">Distances from Marrakech to Major Moroccan Cities</h3>
+  <p style="text-align:center;">Comparison between direct distances (as the crow flies) and driving distances.</p>
+
+  <div class="chart-container">
+    <canvas id="marrakechComparison"></canvas>
+  </div>
 
   <script>
-    const ctx = document.getElementById('marrakechDistances').getContext('2d');
+    const ctx = document.getElementById('marrakechComparison').getContext('2d');
+
     new Chart(ctx, {
       type: 'bar',
       data: {
@@ -19,28 +39,44 @@
           "Casablanca", "Rabat", "Fès", "Tangier", "Chefchaouen", 
           "Tétouan", "Al-Hoceima", "Oujda"
         ],
-        datasets: [{
-          label: 'Driving Distance (km)',
-          data: [
-            182.40, 222.87, 265.83, 200.58, 1532.10,
-            240.04, 325.23, 532.15, 576.99, 573.97,
-            625.81, 790.39, 846.62
-          ],
-          backgroundColor: 'rgba(255, 99, 132, 0.7)',
-          borderColor: 'rgba(255, 99, 132, 1)',
-          borderWidth: 1
-        }]
+        datasets: [
+          {
+            label: 'Direct Distance (km)',
+            data: [
+              168.23, 176.60, 154.04, 131.84, 1177.47,
+              220.32, 286.14, 386.88, 502.59, 467.92,
+              501.69, 551.16, 659.11
+            ],
+            backgroundColor: 'rgba(54, 162, 235, 0.7)',
+            borderColor: 'rgba(54, 162, 235, 1)',
+            borderWidth: 1
+          },
+          {
+            label: 'Driving Distance (km)',
+            data: [
+              182.40, 222.87, 265.83, 200.58, 1532.10,
+              240.04, 325.23, 532.15, 576.99, 573.97,
+              625.81, 790.39, 846.62
+            ],
+            backgroundColor: 'rgba(255, 99, 132, 0.7)',
+            borderColor: 'rgba(255, 99, 132, 1)',
+            borderWidth: 1
+          }
+        ]
       },
       options: {
         responsive: true,
+        maintainAspectRatio: false,
         plugins: {
-          legend: { display: false },
           tooltip: {
             callbacks: {
               label: function(context) {
-                return context.parsed.y + ' km';
+                return context.dataset.label + ': ' + context.parsed.y + ' km';
               }
             }
+          },
+          legend: {
+            position: 'top'
           }
         },
         scales: {
@@ -52,5 +88,6 @@
       }
     });
   </script>
+
 </body>
 </html>
