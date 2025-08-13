@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Marrakech Distances Chart</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <h3>Driving Distances from Marrakech to Major Moroccan Cities (km)</h3>
+  <canvas id="marrakechDistances" width="900" height="500"></canvas>
+
+  <script>
+    const ctx = document.getElementById('marrakechDistances').getContext('2d');
+    new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: [
+          "Essaouira", "Agadir", "Taroudant", "Ouarzazate", "Dakhla", 
+          "Casablanca", "Rabat", "Fès", "Tangier", "Chefchaouen", 
+          "Tétouan", "Al-Hoceima", "Oujda"
+        ],
+        datasets: [{
+          label: 'Driving Distance (km)',
+          data: [
+            182.40, 222.87, 265.83, 200.58, 1532.10,
+            240.04, 325.23, 532.15, 576.99, 573.97,
+            625.81, 790.39, 846.62
+          ],
+          backgroundColor: 'rgba(255, 99, 132, 0.7)',
+          borderColor: 'rgba(255, 99, 132, 1)',
+          borderWidth: 1
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: { display: false },
+          tooltip: {
+            callbacks: {
+              label: function(context) {
+                return context.parsed.y + ' km';
+              }
+            }
+          }
+        },
+        scales: {
+          y: {
+            beginAtZero: true,
+            title: { display: true, text: 'Distance (km)' }
+          }
+        }
+      }
+    });
+  </script>
+</body>
+</html>
