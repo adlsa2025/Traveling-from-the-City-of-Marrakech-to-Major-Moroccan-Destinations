@@ -1,93 +1,249 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Marrakech Distance Comparison Chart</title>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <style>
-    /* Make chart responsive for Blogspot & mobile */
-    .chart-container {
-      position: relative;
-      width: 100%;
-      max-width: 900px;
-      margin: auto;
-    }
-    canvas {
-      background: #fff;
-      border-radius: 10px;
-      padding: 10px;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Distances from Marrakech to Other Moroccan Cities</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 2rem;
+        }
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 1.1rem;
+        }
+        .chart-container {
+            position: relative;
+            height: 600px;
+            margin: 20px 0;
+        }
+        .toggle-container {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+        .toggle-btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            background: #f0f0f0;
+            color: #333;
+        }
+        .toggle-btn.active {
+            background: #667eea;
+            color: white;
+        }
+        .legend {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .legend-color {
+            width: 20px;
+            height: 20px;
+            border-radius: 3px;
+        }
+        .info-box {
+            background: #f8f9fa;
+            border-left: 4px solid #667eea;
+            padding: 15px;
+            margin-top: 20px;
+            border-radius: 5px;
+        }
+        .info-box h3 {
+            margin: 0 0 10px 0;
+            color: #333;
+        }
+        .info-box p {
+            margin: 0;
+            color: #666;
+            line-height: 1.5;
+        }
+    </style>
 </head>
 <body>
+    <div class="container">
+        <h1>Distances from Marrakech to Other Moroccan Cities</h1>
+        <p class="subtitle">Explore the distances from Morocco's cultural heart to major destinations</p>
+        
+        <div class="toggle-container">
+            <button class="toggle-btn active" onclick="showDistance('direct')">Direct Distance (As the Crow Flies)</button>
+            <button class="toggle-btn" onclick="showDistance('driving')">Driving Distance</button>
+        </div>
+        
+        <div class="chart-container">
+            <canvas id="distanceChart"></canvas>
+        </div>
+        
+        <div class="legend">
+            <div class="legend-item">
+                <div class="legend-color" style="background: #e74c3c;"></div>
+                <span>Long Distance (400+ miles)</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background: #f39c12;"></div>
+                <span>Medium Distance (200-399 miles)</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background: #27ae60;"></div>
+                <span>Short Distance (Under 200 miles)</span>
+            </div>
+        </div>
+        
+        <div class="info-box">
+            <h3>About This Data</h3>
+            <p>This chart shows distances from Marrakech to various Moroccan cities. The direct distances represent straight-line measurements, while driving distances account for actual road routes through Morocco's diverse terrain including the Atlas Mountains, coastal roads, and desert highways.</p>
+        </div>
+    </div>
 
-  <h3 style="text-align:center;">Distances from Marrakech to Major Moroccan Cities</h3>
-  <p style="text-align:center;">Comparison between direct distances (as the crow flies) and driving distances.</p>
-
-  <div class="chart-container">
-    <canvas id="marrakechComparison"></canvas>
-  </div>
-
-  <script>
-    const ctx = document.getElementById('marrakechComparison').getContext('2d');
-
-    new Chart(ctx, {
-      type: 'bar',
-      data: {
-        labels: [
-          "Essaouira", "Agadir", "Taroudant", "Ouarzazate", "Dakhla", 
-          "Casablanca", "Rabat", "Fès", "Tangier", "Chefchaouen", 
-          "Tétouan", "Al-Hoceima", "Oujda"
-        ],
-        datasets: [
-          {
-            label: 'Direct Distance (km)',
-            data: [
-              168.23, 176.60, 154.04, 131.84, 1177.47,
-              220.32, 286.14, 386.88, 502.59, 467.92,
-              501.69, 551.16, 659.11
-            ],
-            backgroundColor: 'rgba(54, 162, 235, 0.7)',
-            borderColor: 'rgba(54, 162, 235, 1)',
-            borderWidth: 1
-          },
-          {
-            label: 'Driving Distance (km)',
-            data: [
-              182.40, 222.87, 265.83, 200.58, 1532.10,
-              240.04, 325.23, 532.15, 576.99, 573.97,
-              625.81, 790.39, 846.62
-            ],
-            backgroundColor: 'rgba(255, 99, 132, 0.7)',
-            borderColor: 'rgba(255, 99, 132, 1)',
-            borderWidth: 1
-          }
-        ]
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: {
-          tooltip: {
-            callbacks: {
-              label: function(context) {
-                return context.dataset.label + ': ' + context.parsed.y + ' km';
-              }
-            }
-          },
-          legend: {
-            position: 'top'
-          }
-        },
-        scales: {
-          y: {
-            beginAtZero: true,
-            title: { display: true, text: 'Distance (km)' }
-          }
+    <script>
+        const cities = [
+            'Essaouira', 'Agadir', 'Taroudant', 'Ouarzazate', 'Casablanca', 'Rabat', 
+            'Fès', 'Tangier', 'Chefchaouen', 'Tétouan', 'Al-Hoceima', 'Oujda', 'Dakhla'
+        ];
+        
+        const directDistances = [104.53, 109.74, 95.72, 81.92, 136.90, 177.80, 240.39, 312.30, 290.75, 311.74, 342.47, 409.55, 731.65];
+        const drivingDistances = [113.34, 138.48, 165.18, 124.63, 149.15, 202.09, 330.66, 358.52, 356.65, 388.86, 491.13, 526.07, 952.00];
+        
+        function getColorByDistance(distance) {
+            if (distance >= 400) return '#e74c3c'; // Red for long distances
+            if (distance >= 200) return '#f39c12'; // Orange for medium distances
+            return '#27ae60'; // Green for short distances
         }
-      }
-    });
-  </script>
-
+        
+        let currentChart;
+        
+        function createChart(distances, label) {
+            const ctx = document.getElementById('distanceChart').getContext('2d');
+            
+            if (currentChart) {
+                currentChart.destroy();
+            }
+            
+            const colors = distances.map(dist => getColorByDistance(dist));
+            
+            currentChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: cities,
+                    datasets: [{
+                        label: label,
+                        data: distances,
+                        backgroundColor: colors,
+                        borderColor: colors.map(color => color + 'CC'),
+                        borderWidth: 2,
+                        borderRadius: 5,
+                        borderSkipped: false,
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return `${context.parsed.y.toFixed(2)} miles`;
+                                }
+                            },
+                            backgroundColor: 'rgba(0,0,0,0.8)',
+                            titleColor: 'white',
+                            bodyColor: 'white',
+                            cornerRadius: 10,
+                            padding: 12
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: 'Distance (Miles)',
+                                font: {
+                                    size: 14,
+                                    weight: 'bold'
+                                }
+                            },
+                            grid: {
+                                color: 'rgba(0,0,0,0.1)'
+                            }
+                        },
+                        x: {
+                            title: {
+                                display: true,
+                                text: 'Moroccan Cities',
+                                font: {
+                                    size: 14,
+                                    weight: 'bold'
+                                }
+                            },
+                            ticks: {
+                                maxRotation: 45,
+                                minRotation: 45
+                            },
+                            grid: {
+                                display: false
+                            }
+                        }
+                    },
+                    animation: {
+                        duration: 1000,
+                        easing: 'easeOutQuart'
+                    }
+                }
+            });
+        }
+        
+        function showDistance(type) {
+            const buttons = document.querySelectorAll('.toggle-btn');
+            buttons.forEach(btn => btn.classList.remove('active'));
+            
+            if (type === 'direct') {
+                document.querySelector('button[onclick="showDistance(\'direct\')"]').classList.add('active');
+                createChart(directDistances, 'Direct Distance (Miles)');
+            } else {
+                document.querySelector('button[onclick="showDistance(\'driving\')"]').classList.add('active');
+                createChart(drivingDistances, 'Driving Distance (Miles)');
+            }
+        }
+        
+        // Initialize with direct distances
+        createChart(directDistances, 'Direct Distance (Miles)');
+    </script>
 </body>
 </html>
